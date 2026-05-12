@@ -59,6 +59,24 @@ def analisar_documento(texto_pdf: str, pergunta: str, nome_arquivo: str) -> dict
     conteudo = resposta.choices[0].message.content
     return json.loads(conteudo), resposta.usage
 
+def calcular_custo(uso) -> dict:
+    """
+    Estima o custo da chamada com base nos tokens consumidos.
+    Preços do gpt-4o-mini por 1M tokens:
+    - Input: U$ 0,150
+    - Output: U$ 0,600
+    """
+
+    preco_input = (uso.prompt_tokens  / 1_000_000) * 0.150
+    preco_output = (uso.completion_tokens / 1_000_000) * 0.600
+    custo_total = preco_input + preco_output
+
+    return {
+        "tokens_input": uso.prompt_tokens,
+        "tokens_output": uso.completion_tokens,
+        "custo_usd": round(custo_total, 6)
+    }
+
 def main():
 
     parser = argparse.ArgumentParser(
@@ -76,6 +94,12 @@ def main():
     resultado, uso = analisar_documento(texto, args.pergunta, nome_arquivo)
 
     print(json.dumps(resultado, indent=2, ensure_ascii=False))
+
+    custo = calcular_custo(uso)
+    print("\n--- Estimativa de custo ---")
+    print(f"Tokens input:  {custo['tokens_input']}")
+    print(f"Tokens output: {custo['tokens_output']}")
+    print(f"Custo total:   U$ {custo['custo_usd']}")
 
 if __name__== "__main__":
     main()
