@@ -22,7 +22,7 @@ Foi utilizado o modelo `gpt-4o-mini` pelos seguintes motivos:
 ### Instalação com Poetry
 
 ```bash
-git clone https://github.com/seu-usuario/pdf-activebi.git
+git clone https://github.com/lphillipe/pdf-activebi.git
 cd pdf-activebi
 poetry install
 ```
@@ -30,7 +30,7 @@ poetry install
 ### Instalação sem Poetry (venv padrão)
 
 ```bash
-git clone https://github.com/seu-usuario/pdf-activebi.git
+git clone https://github.com/lphillipe/pdf-activebi.git
 cd pdf-activebi
 
 python3 -m venv .venv
