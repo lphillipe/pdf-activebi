@@ -1,6 +1,7 @@
 import fitz
 import os
 import json
+import argparse
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -58,7 +59,23 @@ def analisar_documento(texto_pdf: str, pergunta: str, nome_arquivo: str) -> dict
     conteudo = resposta.choices[0].message.content
     return json.loads(conteudo), resposta.usage
 
-if __name__ == "__main__":
-    texto = extrair_texto_pdf("/home/lphillipe/Downloads/luisphillipedevops.pdf")
-    resultado, uso = analisar_documento(texto, "Qual é o tema principal deste documento?", "luisphillipedevops.pdf")
+def main():
+
+    parser = argparse.ArgumentParser(
+        description="Analisador de documentos PDF com IA"
+    )
+    parser.add_argument("pdf", help="Caminho para o arquivo PDF")
+    parser.add_argument("pergunta", help="Pergunta sobre o documento")
+
+    args = parser.parse_args()
+
+    nome_arquivo = os.path.basename(args.pdf)
+
+
+    texto = extrair_texto_pdf(args.pdf)
+    resultado, uso = analisar_documento(texto, args.pergunta, nome_arquivo)
+
     print(json.dumps(resultado, indent=2, ensure_ascii=False))
+
+if __name__== "__main__":
+    main()
