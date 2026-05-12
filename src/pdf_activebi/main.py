@@ -15,7 +15,7 @@ def extrair_texto_pdf(caminho_pdf: str) -> str:
     texto_completo = ""
 
     for pagina in documento:
-        texto_completo += pagina.get_text()
+        texto_completo += str(pagina.get_text("text"))
 
     documento.close()
     return texto_completo
